@@ -2,6 +2,9 @@
 <resources>
 
     <string name="app_name">Task2</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="skills">Skills</string>
+    <string name="fullname">Full name</string>
 
 </resources>
