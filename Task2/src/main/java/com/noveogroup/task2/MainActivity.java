@@ -30,6 +30,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final TextView nameTextView = (TextView)findViewById(R.id.name);
+        final TextView surnameTextView = (TextView)findViewById(R.id.surname);
+        final TextView skillsTextView = (TextView)findViewById(R.id.skills);
+
         final List<Employee> employees = new ArrayList<Employee>();
         String name;
         String surname;
@@ -37,11 +41,11 @@ public class MainActivity extends Activity {
         Random rnd = new Random();
 
         for (int i = 0; i < 100; i++) {
-            name = StringGenerator.generateString();
-            surname = StringGenerator.generateString();
-            int max = rnd.nextInt(10) + 1;
-            for (int j = 0; j < max; j++) {
-                skills.add(StringGenerator.generateString());
+            name = StringGenerator.generateString(8);
+            surname = StringGenerator.generateString(8);
+            //int max = rnd.nextInt(5) + 1;
+            for (int j = 0; j < 2; j++) {
+                skills.add(StringGenerator.generateString(2));
             }
             employees.add(new Employee(name, surname, skills));
             skills.clear();
@@ -53,6 +57,14 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this, employees.get(position).getName(), Toast.LENGTH_SHORT).show();
+                nameTextView.setText(employees.get(position).getName());
+                surnameTextView.setText(employees.get(position).getSurname());
+                ArrayList<String> gottenSkills = employees.get(position).getSkills();
+                String stringSkills = "";
+                for (int i = 0; i < gottenSkills.size(); i++) {
+                    stringSkills = stringSkills + gottenSkills.get(i) + ", ";
+                }
+                skillsTextView.setText(stringSkills);
             }
         });
     }
