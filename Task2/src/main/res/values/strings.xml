@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Task2</string>
-    <string name="hello_world">Hello world!</string>
-
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="no_skills">No skills</string>
+    <string name="skills_edit_hint">Type skills here</string>
 </resources>
