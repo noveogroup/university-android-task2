@@ -43,11 +43,15 @@ public class MainActivity extends Activity {
         for (int i = 0; i < 100; i++) {
             name = StringGenerator.generateString(8);
             surname = StringGenerator.generateString(8);
-            //int max = rnd.nextInt(5) + 1;
-            for (int j = 0; j < 2; j++) {
-                skills.add(StringGenerator.generateString(2));
+            int max = rnd.nextInt(5) + 1;
+            String newSkills = "";
+            for (int j = 0; j < max; j++) {
+                newSkills = newSkills + StringGenerator.generateString(20);
+                if (j < (max - 1)) {
+                    newSkills = newSkills + ", ";
+                }
             }
-            employees.add(new Employee(name, surname, skills));
+            employees.add(new Employee(name, surname, newSkills));
             skills.clear();
         }
 
@@ -56,15 +60,9 @@ public class MainActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, employees.get(position).getName(), Toast.LENGTH_SHORT).show();
                 nameTextView.setText(employees.get(position).getName());
                 surnameTextView.setText(employees.get(position).getSurname());
-                ArrayList<String> gottenSkills = employees.get(position).getSkills();
-                String stringSkills = "";
-                for (int i = 0; i < gottenSkills.size(); i++) {
-                    stringSkills = stringSkills + gottenSkills.get(i) + ", ";
-                }
-                skillsTextView.setText(stringSkills);
+                skillsTextView.setText(employees.get(position).getSkills());
             }
         });
     }

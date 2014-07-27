@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public class Employee {
     private String name;
     private String surname;
-    private ArrayList<String> skills = new ArrayList<String>();
+    private String skills;
 
-    public Employee(String name, String surname, ArrayList<String> newSkills) {
+    public Employee(String name, String surname, String newSkills) {
         this.name = name;
         this.surname = surname;
         this.skills = newSkills;
@@ -24,7 +24,7 @@ public class Employee {
         return this.surname;
     }
 
-    public ArrayList<String> getSkills() {
+    public String getSkills() {
         return this.skills;
     }
 }
