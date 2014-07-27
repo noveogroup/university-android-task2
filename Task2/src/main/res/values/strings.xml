@@ -6,5 +6,7 @@
     <string name="surname">Surname</string>
     <string name="skills">Skills</string>
     <string name="fullname">Full name</string>
+    <string name="edit_skills">Edit skills</string>
+    <string name="save">Save</string>
 
 </resources>

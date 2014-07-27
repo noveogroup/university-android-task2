@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/relative_layout_padding">
+    android:padding="@dimen/relative_layout_padding"
+    android:background="@color/dark_blue">
 
     <TextView
         android:layout_width="wrap_content"
@@ -31,4 +32,14 @@
         android:layout_alignParentBottom="false"
         android:layout_marginTop="@dimen/common_margin"
         android:textColor="@color/white"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/skills"
+        android:id="@+id/skillsEditor"
+        android:layout_marginTop="@dimen/common_margin"
+        android:inputType="textMultiLine"
+        android:textColor="@color/white"/>
+
 </RelativeLayout>
