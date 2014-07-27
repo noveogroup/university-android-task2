@@ -1,0 +1,49 @@
+
+<LinearLayout
+    android:id="@+id/root"
+    android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context=".MainActivity"
+    android:background="@android:color/black">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="@dimen/header_width_land"
+        android:layout_height="fill_parent"
+        android:background="@color/dark_blue">
+
+        <include layout="@layout/header"
+            android:layout_width="@dimen/header_width_land"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            style="?android:attr/buttonStyleInset"
+            android:layout_width="@dimen/header_width_land"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_skills"
+            android:id="@+id/editButton"
+            android:background="@color/dark_blue"
+            android:textColor="@color/white"
+            android:clickable="true" />
+
+        <Button
+            style="?android:attr/buttonStyleInset"
+            android:layout_width="@dimen/header_width_land"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:id="@+id/saveButton"
+            android:background="@color/dark_blue"
+            android:textColor="@color/white"
+            android:clickable="true" />
+    </LinearLayout>
+
+    <include layout="@layout/list_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"/>
+
+
+</LinearLayout>
