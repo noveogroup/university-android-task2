@@ -3,46 +3,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/layout_padding"
     >
 
-    <TextView
-        android:id="@+id/name_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:textColor="@android:color/white"
+    <include layout="@layout/name_surname_layout"
+        android:id="@+id/name_surname_row"
         />
 
     <TextView
-        android:id="@+id/surname_text"
+        android:id="@+id/skills_inspect_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textColor="@android:color/white"
-        />
-
-    <TextView
-        android:id="@+id/skills_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_below="@+id/name_surname_row"
         android:layout_marginTop="@dimen/vertical_margin"
-        android:layout_below="@+id/name_text"
+        android:layout_marginLeft="@dimen/horizontal_margin"
+        android:layout_marginRight="@dimen/horizontal_margin"
         android:layout_centerHorizontal="true"
         android:textColor="@android:color/white"
+        android:text="Skills"
+        android:textSize="@dimen/text_size"
         />
 
     <Button
+        android:id="@+id/skills_edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/vertical_margin"
-        android:layout_below="@+id/skills_text"
+        android:layout_below="@+id/skills_inspect_text"
         android:layout_centerHorizontal="true"
         android:paddingLeft="@dimen/button_content_padding"
         android:paddingRight="@dimen/button_content_padding"
         android:text="@string/edit_button_text"
-        android:textColor="@android:color/white"
-        android:onClick="editSkills"
         />
 
 
