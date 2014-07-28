@@ -3,114 +3,126 @@ package com.noveogroup.task2;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
     private ArrayList<Employee> employees = new ArrayList<Employee>();
-    private View headerView;
-    private View headerEdit;
-    private boolean isHeaderInit = false;
-    private boolean isEditMode = false;
-    private int currentEmployer;
+    private View header;
+    private int currentEmployer = -1;
     private ListView listView;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("currentEmployer", currentEmployer);
+        outState.putSerializable("employees", employees);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        headerView = getLayoutInflater().inflate(R.layout.header_view, null);
-        headerEdit = getLayoutInflater().inflate(R.layout.header_edit, null);
-        listView = (ListView) findViewById(R.id.list);
-
-        for (int i = 0; i < 50; i++) {
-            employees.add(new Employee("fname" + i, "lname" + i, "skills" + i));
+        if (savedInstanceState != null) {
+            currentEmployer = savedInstanceState.getInt("currentEmployer");
+            employees = (ArrayList<Employee>)savedInstanceState.getSerializable("employees");
+        } else {
+            for (int i = 0; i < 50; i++) {
+                employees.add(new Employee("fname" + i, "lname" + i, "skills" + i));
+            }
         }
 
-        MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(this, employees);
+        setContentView(R.layout.activity_main);
+
+        header = getLayoutInflater().inflate(R.layout.header, null);
+        listView = (ListView) findViewById(R.id.list);
+        listView.addHeaderView(header);
+        SimpleArrayAdapter adapter = new SimpleArrayAdapter(this, employees);
         listView.setAdapter(adapter);
+
+        hideAll();
+
+        if (currentEmployer >= 0) {
+            showOrHideListHeader();
+            showViewMode();
+        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ViewGroup employeeInfoContainer = (ViewGroup) findViewById(R.id.employee_info);
-                if(employeeInfoContainer != null) {
-                    employeeInfoContainer.removeAllViews();
-                    employeeInfoContainer.addView(headerView);
-                }
-                else {
-                    if (!isHeaderInit) {
-                        listView.addHeaderView(headerView);
-                        isHeaderInit = true;
-                    } else {
-                        position --;
-                    }
-                }
-
-                currentEmployer = position;
-
-                updateHeader();
+                showOrHideListHeader();
+                currentEmployer = --position;
+                showViewMode();
             }
         });
     }
 
-    public void editSkillsButtonOnClick(View v) {
-        ViewGroup employeeInfoContainer = (ViewGroup) findViewById(R.id.employee_info);
-        if(employeeInfoContainer != null) {
-            employeeInfoContainer.removeAllViews();
-            employeeInfoContainer.addView(headerEdit);
-        } else {
-            listView.removeHeaderView(headerView);
-            listView.addHeaderView(headerEdit);
+    public void showOrHideListHeader() {
+        findViewById(R.id.header).setVisibility(View.VISIBLE);
+        View headerLand = findViewById(R.id.header_land);
+        if(headerLand != null) {
+            listView.findViewById(R.id.header_box).setVisibility(View.GONE);
         }
+        else {
+            listView.findViewById(R.id.header_box).setVisibility(View.VISIBLE);
+        }
+    }
 
-        isEditMode = true;
-        updateHeader();
+    public void showViewMode() {
+        TextView fname = (TextView) findViewById(R.id.fname);
+        TextView lname = (TextView) findViewById(R.id.lname);
+        TextView skills = (TextView) findViewById(R.id.skills);
+
+        fname.setVisibility(View.VISIBLE);
+        lname.setVisibility(View.VISIBLE);
+        skills.setVisibility(View.VISIBLE);
+        findViewById(R.id.edit_skills_button).setVisibility(View.VISIBLE);
+        findViewById(R.id.edit_skills_view).setVisibility(View.GONE);
+        findViewById(R.id.save_skills_button).setVisibility(View.GONE);
+
+        if (currentEmployer >= 0) {
+            fname.setText(employees.get(currentEmployer).getFname());
+            lname.setText(employees.get(currentEmployer).getLname());
+            skills.setText(employees.get(currentEmployer).getSkills());
+        }
+    }
+
+    public void showEditMode() {
+
+        EditText editSkills = (EditText) findViewById(R.id.edit_skills_view);
+        editSkills.setText(employees.get(currentEmployer).getSkills());
+
+        findViewById(R.id.fname).setVisibility(View.VISIBLE);
+        findViewById(R.id.lname).setVisibility(View.VISIBLE);
+        findViewById(R.id.skills).setVisibility(View.GONE);
+        findViewById(R.id.edit_skills_button).setVisibility(View.GONE);
+        editSkills.setVisibility(View.VISIBLE);
+        findViewById(R.id.save_skills_button).setVisibility(View.VISIBLE);
+    }
+
+    public void hideAll() {
+        listView.findViewById(R.id.header_box).setVisibility(View.GONE);
+        findViewById(R.id.skills).setVisibility(View.GONE);
+        findViewById(R.id.edit_skills_button).setVisibility(View.GONE);
+        findViewById(R.id.edit_skills_view).setVisibility(View.GONE);
+        findViewById(R.id.save_skills_button).setVisibility(View.GONE);
+        findViewById(R.id.fname).setVisibility(View.GONE);
+        findViewById(R.id.lname).setVisibility(View.GONE);
+    }
+
+    public void editSkillsButtonOnClick(View v) {
+        showEditMode();
     }
 
     public void saveSkillsButtonOnClick(View v) {
 
-        TextView skills = (TextView) headerEdit.findViewById(R.id.edit_skills_view);
-        employees.get(currentEmployer).skills = skills.getText().toString();
+        TextView skills = (TextView) findViewById(R.id.edit_skills_view);
+        employees.get(currentEmployer).setSkills(skills.getText().toString());
 
-        ViewGroup employeeInfoContainer = (ViewGroup) findViewById(R.id.employee_info);
-        if(employeeInfoContainer != null) {
-            employeeInfoContainer.removeAllViews();
-            employeeInfoContainer.addView(headerView);
-        } else {
-            listView.removeHeaderView(headerEdit);
-            listView.addHeaderView(headerView);
-        }
-
-        isEditMode = false;
-        updateHeader();
-    }
-
-    private void updateHeader() {
-        Employee employee = employees.get(currentEmployer);
-
-        if (!isEditMode) {
-            TextView fname = (TextView) headerView.findViewById(R.id.fname);
-            TextView lname = (TextView) headerView.findViewById(R.id.lname);
-            TextView skills = (TextView) headerView.findViewById(R.id.skills);
-
-            fname.setText(employee.fname);
-            lname.setText(employee.lname);
-            skills.setText(employee.skills);
-        } else {
-            TextView fname = (TextView) headerEdit.findViewById(R.id.fname);
-            TextView lname = (TextView) headerEdit.findViewById(R.id.lname);
-            TextView skills = (TextView) headerEdit.findViewById(R.id.edit_skills_view);
-
-            fname.setText(employee.fname);
-            lname.setText(employee.lname);
-            skills.setText(employee.skills);
-        }
+        showViewMode();
     }
 }
