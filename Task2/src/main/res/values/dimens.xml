@@ -4,4 +4,5 @@
     <dimen name="common_margin">30dp</dimen>
     <dimen name="button_margin">70dp</dimen>
     <dimen name="header_width_land">300dp</dimen>
+    <dimen name="compound_drawable_size">20dp</dimen>
 </resources>
