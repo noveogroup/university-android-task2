@@ -2,6 +2,7 @@ package com.noveogroup.task2;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +56,7 @@ public class SkillsFragment extends Fragment {
 
     private void switchViewMode() {
         String skills = mEmployee.getSkills();
-        mSkillsView.setText(
-                (skills != null && skills.length() > 0) ? skills : getString(R.string.no_skills));
+        mSkillsView.setText(TextUtils.isEmpty(skills) ? getString(R.string.no_skills) : skills);
         mSkillsView.setVisibility(View.VISIBLE);
         mEditBtn.setVisibility(View.VISIBLE);
         mSkillsEdit.setVisibility(View.GONE);
