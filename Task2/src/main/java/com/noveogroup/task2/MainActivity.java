@@ -1,10 +1,10 @@
 package com.noveogroup.task2;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -21,7 +21,7 @@ import com.noveogroup.task2.model.DataTuple;
 
 import java.util.ArrayList;
 
-public final class MainActivity extends Activity implements SkillsFragment.OnEditSaveListener {
+public final class MainActivity extends FragmentActivity implements SkillsFragment.OnEditSaveListener {
 
     private DataModel dataModel;
 
@@ -111,7 +111,7 @@ public final class MainActivity extends Activity implements SkillsFragment.OnEdi
             newFragment = new SkillsInspectFragment();
         }
         newFragment.setArguments(dataModel.getSelectedInBundle());
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.info_skills_layout, newFragment);
         transaction.addToBackStack(null);
         transaction.commit();
