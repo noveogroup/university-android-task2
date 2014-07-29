@@ -1,4 +1,4 @@
-package com.noveogroup.task2.model.adapter;
+package com.noveogroup.task2.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -57,8 +57,8 @@ public class EmployeesListAdapter extends BaseAdapter {
                                         .inflate(R.layout.list_item_layout, parent, false);
 
             viewHolder = new ViewHolder();
-            viewHolder.nameText = (TextView) convertView.findViewById(R.id.name_text);
-            viewHolder.surnameText = (TextView) convertView.findViewById(R.id.surname_text);
+            viewHolder.nameText = (TextView) convertView.findViewById(R.id.name_item);
+            viewHolder.surnameText = (TextView) convertView.findViewById(R.id.surname_item);
 
             convertView.setTag(viewHolder);
         }

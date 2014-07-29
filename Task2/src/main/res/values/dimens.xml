@@ -7,4 +7,5 @@
     <dimen name="text_size">20sp</dimen>
     <dimen name="drawable_size">20dp</dimen>
     <dimen name="text_padding">10dp</dimen>
+
 </resources>

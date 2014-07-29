@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/skills_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:id="@+id/name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/yellow_selector"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size"
+        android:clickable="true"
+        android:padding="@dimen/text_padding"
+        />
+
+    <TextView
+        android:id="@+id/surname_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/yellow_selector"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size"
+        android:clickable="true"
+        android:padding="@dimen/text_padding"
+        />
+
+    <TextView
+        android:id="@+id/skills_inspect_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/surname_text"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_marginLeft="@dimen/horizontal_margin"
+        android:layout_marginRight="@dimen/horizontal_margin"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size"
+        />
+
+    <Button
+        android:id="@+id/skills_edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_below="@+id/skills_inspect_text"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="@dimen/button_content_padding"
+        android:paddingRight="@dimen/button_content_padding"
+        android:text="@string/edit_button_text"
+        />
+
+    <EditText
+        android:id="@+id/skills_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/surname_text"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_marginLeft="@dimen/horizontal_margin"
+        android:layout_marginRight="@dimen/horizontal_margin"
+        android:hint="@string/skills_input_hint"
+        android:textSize="@dimen/text_size"
+        />
+
+    <Button
+        android:id="@+id/skills_save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_below="@+id/skills_edit_text"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="@dimen/button_content_padding"
+        android:paddingRight="@dimen/button_content_padding"
+        android:text="@string/save_button_text"
+        />
+
+</RelativeLayout>
