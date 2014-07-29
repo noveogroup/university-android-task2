@@ -1,6 +1,8 @@
 package com.noveogroup.task2;
 
-public class Employee {
+import java.io.Serializable;
+
+public class Employee implements Serializable {
 	private final String name;
 	private final String surname;
 	private String skills;

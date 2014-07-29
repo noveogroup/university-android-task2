@@ -3,33 +3,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			  android:orientation="vertical"
 			  android:layout_width="match_parent"
-			  android:layout_height="match_parent"
+			  android:layout_height="wrap_content"
+			  android:padding="@dimen/info_padding"
 			  android:gravity="center">
 
 	<LinearLayout
 		android:orientation="horizontal"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_gravity="center_horizontal">
+		android:layout_gravity="center">
 
-		<TextView
+	<TextView
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:id="@+id/name_text"
 			android:layout_weight="1"
-			android:gravity="center"/>
+			android:gravity="center"
+
+			android:textStyle="bold"
+			android:textSize="20sp"/>
 
 		<TextView
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:id="@+id/surname_text"
 			android:layout_weight="1"
-			android:gravity="center"/>
+			android:gravity="center"
+			android:textStyle="bold"
+			android:textSize="20sp"/>
 	</LinearLayout>
 
 	<TextView
+		android:layout_marginTop="@dimen/info_skill_margin"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:id="@+id/skills_text"
-		android:layout_gravity="center_horizontal"/>
+		android:textStyle="italic"
+		android:textSize="15sp"
+		android:layout_gravity="center"/>
 </LinearLayout>

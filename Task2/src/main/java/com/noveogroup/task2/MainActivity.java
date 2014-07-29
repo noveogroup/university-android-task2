@@ -1,17 +1,17 @@
 package com.noveogroup.task2;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
+	private InfoFragment infoFragment;
+
 	public static final Employee[] initial = {
 			new Employee("Johan", "Ivanov"),
 			new Employee("Peter", "Petrov"),
@@ -33,22 +33,41 @@ public class MainActivity extends Activity {
 		}
 	}
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		infoFragment = null;
 
 		ArrayAdapter<Employee> adapter = new ArrayAdapter<Employee>(this, R.layout.list_item, initial);
 		ListView list = (ListView) findViewById(R.id.listView);
+
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			//View headerView = LayoutInflater.from(this).inflate(R.layout.header, list, false);
+			View headerView = new FrameLayout(this);
+			headerView.setId(R.id.info_container);
+			list.addHeaderView(headerView);
+		}
+
+		//
+
+
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				//TODO: replace
-				Toast.makeText(MainActivity.this, ((Employee) parent.getItemAtPosition(position)).getSkills(), Toast.LENGTH_SHORT).show();
+				getFragmentManager().executePendingTransactions();
+				if (infoFragment == null) {
+
+					getFragmentManager().beginTransaction().
+							replace(R.id.info_container, InfoFragment.newInstance(
+											((Employee) parent.getItemAtPosition(position)))
+							).commit();
+				} else {
+					infoFragment.applyInfo(((Employee) parent.getItemAtPosition(position)));
+				}
+
 			}
 		});
 	}
-
 }
