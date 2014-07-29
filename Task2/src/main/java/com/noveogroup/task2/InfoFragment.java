@@ -13,7 +13,7 @@ public class InfoFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.info_fragment, container, false);
-		setInfo(view);
+		applyInfo(view);
 		System.out.println("View created");
 		return view;
 	}
@@ -21,13 +21,13 @@ public class InfoFragment extends Fragment {
 	public static InfoFragment newInstance(Employee employee) {
 		InfoFragment fragment = new InfoFragment();
 		Bundle args = new Bundle();
-		args.putSerializable(EMPLOYEE_BUNDLE_TEXT, employee);
+		args.putParcelable(EMPLOYEE_BUNDLE_TEXT, employee);
 		fragment.setArguments(args);
 		return fragment;
 	}
 
-	private void setInfo(View view) {
-		Employee employee = (Employee) getArguments().getSerializable(EMPLOYEE_BUNDLE_TEXT);
+	private void applyInfo(View view) {
+		Employee employee = getArguments().getParcelable(EMPLOYEE_BUNDLE_TEXT);
 		applyInfo(view, employee);
 	}
 

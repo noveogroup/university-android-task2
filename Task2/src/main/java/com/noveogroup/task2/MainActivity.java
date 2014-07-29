@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 public class MainActivity extends Activity {
 	private InfoFragment infoFragment;
-
+	private int currentPosition;
 	public static final Employee[] initial = {
 			new Employee("Johan", "Ivanov"),
 			new Employee("Peter", "Petrov"),
@@ -43,14 +43,10 @@ public class MainActivity extends Activity {
 		ListView list = (ListView) findViewById(R.id.listView);
 
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-			//View headerView = LayoutInflater.from(this).inflate(R.layout.header, list, false);
 			View headerView = new FrameLayout(this);
 			headerView.setId(R.id.info_container);
 			list.addHeaderView(headerView);
 		}
-
-		//
-
 
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -60,7 +56,7 @@ public class MainActivity extends Activity {
 				if (infoFragment == null) {
 
 					getFragmentManager().beginTransaction().
-							replace(R.id.info_container, InfoFragment.newInstance(
+							replace(R.id.info_container, infoFragment = InfoFragment.newInstance(
 											((Employee) parent.getItemAtPosition(position)))
 							).commit();
 				} else {
