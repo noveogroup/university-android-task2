@@ -25,4 +25,9 @@ public class Employee {
 	public void setSkills(String skills) {
 		this.skills = skills;
 	}
+
+	@Override
+	public String toString() {
+		return name + " " + surname;
+	}
 }
