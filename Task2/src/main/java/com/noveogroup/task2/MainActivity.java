@@ -2,7 +2,6 @@ package com.noveogroup.task2;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import com.noveogroup.task2.model.Employee;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.zip.Inflater;
 
 public class MainActivity extends Activity {
 
@@ -104,13 +102,25 @@ public class MainActivity extends Activity {
         final Resources res = getResources();
         final Drawable drawable = res.getDrawable(R.drawable.checkmark);
         drawable.setBounds(0, 0, res.getDimensionPixelOffset(R.dimen.compound_drawable_size), res.getDimensionPixelOffset(R.dimen.compound_drawable_size));
+
+        ListView listView = (ListView)findViewById(R.id.list_view);
+        if (res.getConfiguration().orientation == 1) {
+            View header = View.inflate(this, R.layout.header , null);
+            listView.addHeaderView(header);
+
+            editButton = (Button)header.findViewById(R.id.editButton);
+            saveButton = (Button)header.findViewById(R.id.saveButton);
+            skillsEditor = (EditText)header.findViewById(R.id.skillsEditor);
+            nameTextView = (TextView)header.findViewById(R.id.name);
+            surnameTextView = (TextView)header.findViewById(R.id.surname);
+            skillsTextView = (TextView)header.findViewById(R.id.skills);
+        }
         saveButton.setCompoundDrawables(null, null, drawable, null);
 
         editButton.setVisibility(View.GONE);
         saveButton.setVisibility(View.GONE);
         skillsEditor.setVisibility(View.GONE);
 
-        //final List<Employee> employees = new ArrayList<Employee>();
         Random rnd = new Random();
 
         for (int i = 0; i < 100; i++) {
@@ -144,15 +154,13 @@ public class MainActivity extends Activity {
             }
         });
 
-        ListView listView = (ListView)findViewById(R.id.list_view);
-        /*if (res.getConfiguration().orientation == 1) {
-            View header = View.inflate(this, R.layout.header , null);
-            listView.addHeaderView(header);
-        }*/
         listView.setAdapter(new EmployeesAdapter(this, employees));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (res.getConfiguration().orientation == 1) {
+                    position--;
+                }
                 currentEmployeeNum = position;
                 nameTextView.setText(employees.get(position).getName());
                 surnameTextView.setText(employees.get(position).getSurname());

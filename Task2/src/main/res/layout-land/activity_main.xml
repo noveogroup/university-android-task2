@@ -18,7 +18,7 @@
         <include layout="@layout/header"
             android:layout_width="@dimen/header_width_land"
             android:layout_height="wrap_content"/>
-
+<!--
         <Button
             style="?android:attr/buttonStyleInset"
             android:id="@+id/editButton"
@@ -38,6 +38,7 @@
             android:background="@color/dark_blue"
             android:textColor="@android:color/white"
             android:clickable="true" />
+-->
     </LinearLayout>
 
     <include layout="@layout/list_layout"

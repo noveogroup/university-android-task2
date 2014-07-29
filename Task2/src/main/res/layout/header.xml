@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/relative_layout_padding"
-    android:background="@color/dark_blue">
+    android:background="@color/dark_blue"
+    android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
@@ -22,6 +26,7 @@
         android:text="@string/surname"
         android:layout_alignParentRight="true"
         android:textColor="@android:color/white"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/skills"
@@ -29,7 +34,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/skills"
-        android:layout_alignParentBottom="false"
         android:layout_marginTop="@dimen/common_margin"
         android:textColor="@android:color/white"/>
 
@@ -40,6 +44,27 @@
         android:text="@string/skills"
         android:layout_marginTop="@dimen/common_margin"
         android:inputType="textMultiLine"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:paddingBottom="50dp"/>
 
-</RelativeLayout>
+    <Button
+        style="?android:attr/buttonStyleInset"
+        android:id="@+id/editButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_skills"
+        android:background="@color/dark_blue"
+        android:textColor="@android:color/white"
+        android:clickable="true"/>
+
+    <Button
+        style="?android:attr/buttonStyleInset"
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:background="@color/dark_blue"
+        android:textColor="@android:color/white"
+        android:clickable="true" />
+
+</LinearLayout>
