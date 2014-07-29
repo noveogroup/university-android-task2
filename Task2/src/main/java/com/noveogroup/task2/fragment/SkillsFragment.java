@@ -14,19 +14,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.noveogroup.task2.MainActivity;
 import com.noveogroup.task2.R;
 import com.noveogroup.task2.model.Employee;
 
-public class SkillsFragment extends Fragment {
+public final class SkillsFragment extends Fragment {
 
-    public final static String IS_EDITING = "com.noveogroup.com.IS_EDITING";
-    public final static String SKILLS_TEXT = "com.noveogroup.com.SKILLS_TEXT";
+    public final static String FRAGMENT_TAG = "com.noveogroup.task2.FRAGMENT_TAG";
+    public final static String IS_EDITING = "com.noveogroup.com.task2.IS_EDITING";
+    public final static String EMPLOYEE = "com.noveogroup.com.task2.EMPLOYEE";
 
-    protected OnSaveListener onSaveListener;
+    private OnSaveListener onSaveListener;
+    private TextView nameText;
+    private TextView surnameText;
+    private TextView skillsInspectText;
+    private EditText skillsEditText;
+    private Button skillsEditButton;
+    private Button skillsSaveButton;
 
     public interface OnSaveListener {
-        void onSave();
+        void onSave(final String textToSave);
     }
 
     @Override
@@ -42,35 +48,38 @@ public class SkillsFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.skills_layout, container, false);
+        nameText = (TextView) view.findViewById(R.id.name_text);
+        surnameText = (TextView) view.findViewById(R.id.surname_text);
+        skillsInspectText = (TextView) view.findViewById(R.id.skills_inspect_text);
+        skillsEditText = (EditText) view.findViewById(R.id.skills_edit_text);
+        skillsEditButton = (Button) view.findViewById(R.id.skills_edit_button);
+        skillsSaveButton = (Button) view.findViewById(R.id.skills_save_button);
 
-        final Button skillsEditButton = (Button) view.findViewById(R.id.skills_edit_button);
         skillsEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TextView textView = (TextView) getActivity().findViewById(R.id.skills_inspect_text);
-                EditText editText = (EditText) getActivity().findViewById(R.id.skills_edit_text);
-                editText.setText(textView.getText());
+                skillsEditText.setText(skillsInspectText.getText());
+                changeEditViewsVisibility(View.VISIBLE);
+                changeInspectViewsVisibility(View.INVISIBLE);
 
-                textView.setVisibility(View.INVISIBLE);
-                editText.setVisibility(View.VISIBLE);
-                skillsEditButton.setVisibility(View.INVISIBLE);
-                getActivity().findViewById(R.id.skills_save_button).setVisibility(View.VISIBLE);
-
-                editText.setSelection(editText.getText().length());
-                if (editText.requestFocus()) {
+                skillsEditText.setSelection(skillsEditText.getText().length());
+                if (skillsEditText.requestFocus()) {
                     InputMethodManager inputMethodManager = (InputMethodManager) getActivity()
                             .getSystemService(Activity.INPUT_METHOD_SERVICE);
-                    inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+                    inputMethodManager.showSoftInput(skillsEditText,
+                                                             InputMethodManager.SHOW_IMPLICIT);
 
                 }
             }
         });
 
-        final Button skillsSaveButton = (Button) view.findViewById(R.id.skills_save_button);
         skillsSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSaveListener.onSave();
+                InputMethodManager inputMethodManager = (InputMethodManager) getActivity()
+                        .getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(skillsEditText.getWindowToken(), 0);
+                onSaveListener.onSave(skillsEditText.getText().toString());
             }
         });
         final Resources resources = getResources();
@@ -81,21 +90,18 @@ public class SkillsFragment extends Fragment {
 
         skillsSaveButton.setCompoundDrawables(drawable, null, null, null);
 
-        Bundle bundle = getArguments();
-        Employee employee = bundle.getParcelable(MainActivity.EMPLOYEE);
-        setNameSurnameText(view, employee);
-
-        if (savedInstanceState != null && savedInstanceState.getBoolean(IS_EDITING)) {
-            String skillsText = savedInstanceState.getString(SKILLS_TEXT);
-            EditText editText = (EditText) view.findViewById(R.id.skills_edit_text);
-            editText.setText(skillsText);
-            skillsEditButton.setVisibility(View.INVISIBLE);
-            view.findViewById(R.id.skills_inspect_text).setVisibility(View.INVISIBLE);
-        } else {
-            TextView skillsText = (TextView) view.findViewById(R.id.skills_inspect_text);
-            skillsText.setText(employee.getSkills());
-            skillsSaveButton.setVisibility(View.INVISIBLE);
-            view.findViewById(R.id.skills_edit_text).setVisibility(View.INVISIBLE);
+        Employee employee = savedInstanceState == null ? getEmployee()
+                            : (Employee) savedInstanceState.getParcelable(EMPLOYEE);
+        if(employee != null) {
+            nameText.setText(employee.getName());
+            surnameText.setText(employee.getSurname());
+            if (savedInstanceState != null && savedInstanceState.getBoolean(IS_EDITING)) {
+                skillsEditText.setText(employee.getSkills());
+                changeInspectViewsVisibility(View.INVISIBLE);
+            } else {
+                skillsInspectText.setText(employee.getSkills());
+                changeEditViewsVisibility(View.INVISIBLE);
+            }
         }
 
         return view;
@@ -105,38 +111,81 @@ public class SkillsFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        TextView textView = (TextView) getActivity().findViewById(R.id.skills_edit_text);
-        if (textView.getVisibility() == View.VISIBLE) {
+        if(nameText == null) {
+            nameText = (TextView) getActivity().findViewById(R.id.name_text);
+            surnameText = (TextView) getActivity().findViewById(R.id.surname_text);
+            skillsInspectText = (TextView) getActivity().findViewById(R.id.skills_inspect_text);
+            skillsEditText = (EditText) getActivity().findViewById(R.id.skills_edit_text);
+        }
+        if (skillsEditText.getVisibility() == View.VISIBLE) {
             outState.putBoolean(IS_EDITING, true);
-            outState.putString(SKILLS_TEXT, textView.getText().toString());
+            outState.putParcelable(EMPLOYEE, new Employee(nameText.getText().toString(),
+                                                          surnameText.getText().toString(),
+                                                          skillsEditText.getText().toString()));
         } else {
             outState.putBoolean(IS_EDITING, false);
-            outState.putString(SKILLS_TEXT, "");
+            outState.putParcelable(EMPLOYEE, new Employee(nameText.getText().toString(),
+                                                          surnameText.getText().toString(),
+                                                          skillsInspectText.getText().toString()));
         }
     }
 
     public void showEmployeeInfo(Employee employee) {
-        View editText = getActivity().findViewById(R.id.skills_edit_text);
-        TextView skillsInspectText = (TextView) getView().findViewById(R.id.skills_inspect_text);
-        if (editText.getVisibility() == View.VISIBLE) {
+        if (skillsEditText.getVisibility() == View.VISIBLE) {
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity()
                     .getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+            inputMethodManager.hideSoftInputFromWindow(skillsEditText.getWindowToken(), 0);
 
-            editText.setVisibility(View.INVISIBLE);
-            getView().findViewById(R.id.skills_save_button).setVisibility(View.INVISIBLE);
-            skillsInspectText.findViewById(R.id.skills_inspect_text).setVisibility(View.VISIBLE);
-            getView().findViewById(R.id.skills_edit_button).setVisibility(View.VISIBLE);
+            changeEditViewsVisibility(View.INVISIBLE);
+            changeInspectViewsVisibility(View.VISIBLE);
         }
-        setNameSurnameText(getView(), employee);
+        setNameSurnameText(employee);
         skillsInspectText.setText(employee.getSkills());
     }
 
-    private void setNameSurnameText(View view, Employee employee) {
-        TextView nameText = (TextView) view.findViewById(R.id.name_text);
+    private void setNameSurnameText(Employee employee) {
         nameText.setText(employee.getName());
-        TextView surnameText = (TextView) view.findViewById(R.id.surname_text);
         surnameText.setText(employee.getSurname());
 
+    }
+
+    public static SkillsFragment newInstance(Employee employee) {
+        SkillsFragment newFragment = new SkillsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(EMPLOYEE, employee);
+        newFragment.setArguments(bundle);
+
+        return newFragment;
+    }
+
+    private Employee getEmployee() {
+        Bundle bundle = getArguments();
+        return bundle == null ? null : (Employee) bundle.getParcelable(EMPLOYEE);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        nameText = null;
+        surnameText = null;
+        skillsInspectText = null;
+        skillsEditText = null;
+        skillsEditButton = null;
+        skillsSaveButton = null;
+    }
+
+    private void changeEditViewsVisibility(int newState) {
+        if(newState == View.VISIBLE || newState == View.INVISIBLE) {
+            skillsEditText.setVisibility(newState);
+            skillsSaveButton.setVisibility(newState);
+        }
+    }
+
+    private void changeInspectViewsVisibility(int newState) {
+        if(newState == View.VISIBLE || newState == View.INVISIBLE) {
+            skillsInspectText.setVisibility(newState);
+            skillsEditButton.setVisibility(newState);
+        }
     }
 }

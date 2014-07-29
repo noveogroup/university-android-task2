@@ -22,14 +22,13 @@ import java.util.ArrayList;
 public final class MainActivity extends FragmentActivity
                                 implements SkillsFragment.OnSaveListener {
 
-    public final static String EMPLOYEE = "com.noveogroup.com.EMPLOYEE";
-    public final static String EMPLOYEES_LIST = "com.noveogroup.com.EMPLOYEES_LIST";
+    public final static String EMPLOYEES_LIST = "com.noveogroup.com.task2.EMPLOYEES_LIST";
     public final static String SELECTED_ITEM_POSITION
                                = "com.noveogroup.task2.SELECTED_ITEM_POSITION";
-    public final static String FRAGMENT_TAG = "com.noveogroup.task2.FRAGMENT_TAG";
 
     private ArrayList<Employee> employeesList;
-    int selectedItemIndex;
+    private int selectedItemIndex;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +44,7 @@ public final class MainActivity extends FragmentActivity
         }
 
         EmployeesListAdapter employeesListAdapter = new EmployeesListAdapter(this, employeesList);
-        ListView listView = (ListView) findViewById(R.id.list_view);
+        listView = (ListView) findViewById(R.id.list_view);
 
 //        If we are in portrait orientation we need to inflate a header.
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -68,16 +67,9 @@ public final class MainActivity extends FragmentActivity
     }
 
     @Override
-    public void onSave() {
-        EditText editText = (EditText) findViewById(R.id.skills_edit_text);
-        String newSkills = editText.getText().toString();
+    public void onSave(String newSkills) {
         employeesList.get(selectedItemIndex).setSkills(newSkills);
-
         putFragment();
-
-        InputMethodManager inputMethodManager
-                                    = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         Toast.makeText(this, "Skills were updated", Toast.LENGTH_SHORT).show();
     }
 
@@ -85,7 +77,7 @@ public final class MainActivity extends FragmentActivity
         this.selectedItemIndex = selectedItemIndex;
 
         SkillsFragment fragment = (SkillsFragment) getSupportFragmentManager()
-                                                              .findFragmentByTag(FRAGMENT_TAG);
+                                                    .findFragmentByTag(SkillsFragment.FRAGMENT_TAG);
         if(fragment == null) {
             putFragment();
         }
@@ -95,17 +87,14 @@ public final class MainActivity extends FragmentActivity
 
 //        If we are in portrait orientation make ListView scroll to the header.
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            ((ListView) findViewById(R.id.list_view)).smoothScrollToPosition(0);
+            listView.smoothScrollToPosition(0);
         }
     }
 
     private void putFragment() {
-        Fragment newFragment = new SkillsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(EMPLOYEE, employeesList.get(selectedItemIndex));
-        newFragment.setArguments(bundle);
+        Fragment newFragment = SkillsFragment.newInstance(employeesList.get(selectedItemIndex));
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.info_skills_layout, newFragment, FRAGMENT_TAG);
+        transaction.replace(R.id.info_skills_layout, newFragment, SkillsFragment.FRAGMENT_TAG);
         transaction.addToBackStack(null);
         transaction.commit();
     }

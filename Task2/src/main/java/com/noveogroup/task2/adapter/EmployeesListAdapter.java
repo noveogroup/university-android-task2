@@ -12,7 +12,7 @@ import com.noveogroup.task2.model.Employee;
 
 import java.util.List;
 
-public class EmployeesListAdapter extends BaseAdapter {
+public final class EmployeesListAdapter extends BaseAdapter {
     private Context context;
     private List<Employee> employeesList;
 
@@ -22,7 +22,6 @@ public class EmployeesListAdapter extends BaseAdapter {
     }
 
     public EmployeesListAdapter(Context context, List<Employee> employeesList) {
-        super();
         this.context = context;
         this.employeesList = employeesList;
     }
