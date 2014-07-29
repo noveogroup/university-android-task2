@@ -5,17 +5,17 @@
     android:orientation="horizontal">
 
     <ListView
+        android:id="@+id/employees_list"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:id="@+id/employees_list" />
+        android:layout_weight="1" />
 
     <fragment
+        android:id="@+id/fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:name="com.noveogroup.task2.SkillsFragment"
-        android:id="@+id/fragment"
         tools:layout="@layout/skills_fragment" />
 
 </LinearLayout>

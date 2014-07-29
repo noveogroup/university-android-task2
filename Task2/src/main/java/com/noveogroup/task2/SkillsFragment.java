@@ -1,8 +1,8 @@
 package com.noveogroup.task2;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,12 +45,13 @@ public class SkillsFragment extends Fragment {
                 infoView();
             }
         });
+        setRetainInstance(true);
         return v;
     }
 
     private void setTextSkills() {
         String skills = employee.getSkills();
-        if(skills == null || skills.length() == 0) {
+        if(TextUtils.isEmpty(skills)) {
             skillsText.setText(R.string.no_skills);
         }
         else {
