@@ -13,12 +13,10 @@ public class Employee implements Parcelable{
         this.surname = surname;
     }
 
-    public Employee(Parcel parcel) {
-        String[] data = new String[3];
-        parcel.readStringArray(data);
-        name = data[0];
-        surname = data[1];
-        skills = data[2];
+    private Employee(Parcel parcel) {
+        name = parcel.readString();
+        surname = parcel.readString();
+        skills = parcel.readString();
     }
 
     public void setSkills(String skills) {
@@ -49,7 +47,9 @@ public class Employee implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{name, surname, skills});
+        dest.writeString(name);
+        dest.writeString(surname);
+        dest.writeString(skills);
     }
 
     public static final Creator<Employee> CREATOR = new Creator<Employee>() {

@@ -4,7 +4,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,12 +14,12 @@ public class MainActivity extends FragmentActivity {
     public static final String POSITION_KEY = "com.noveogroup.task2.position";
 
     private SkillsFragment skillsFragment;
-    private ListView employeesList;
     private int selectedPosition = -1;
     private Employee[] employees;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final ListView employeesList;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -35,8 +34,7 @@ public class MainActivity extends FragmentActivity {
         }
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            LayoutInflater inflater = getLayoutInflater();
-            View header = inflater.inflate(R.layout.header_fragment_layout, null);
+            View header = getLayoutInflater().inflate(R.layout.header_fragment_layout, employeesList, false);
             employeesList.addHeaderView(header);
             skillsFragment = (SkillsFragment) fm.findFragmentById(R.id.fragment_header);
         }
@@ -52,7 +50,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    selectedPosition = position - 1;
+                    selectedPosition = position - employeesList.getHeaderViewsCount();
                 }
                 else {
                     selectedPosition = position;
