@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
 
     private ArrayList<Employee> employees = new ArrayList<Employee>();
-    private View header;
     private int currentEmployer = -1;
     private ListView listView;
 
@@ -38,7 +37,7 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        header = getLayoutInflater().inflate(R.layout.header, null);
+        View header = getLayoutInflater().inflate(R.layout.header, listView, false);
         listView = (ListView) findViewById(R.id.list);
         listView.addHeaderView(header);
         SimpleArrayAdapter adapter = new SimpleArrayAdapter(this, employees);

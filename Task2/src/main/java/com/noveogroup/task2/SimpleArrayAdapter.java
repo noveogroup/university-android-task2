@@ -14,13 +14,11 @@ import java.util.ArrayList;
  */
 public class SimpleArrayAdapter extends ArrayAdapter<Employee> {
     private final ArrayList<Employee> values;
-    private Context context;
     private View rowView;
 
     public SimpleArrayAdapter(Context context, ArrayList<Employee> values) {
         super(context, R.layout.row_layout, values);
         this.values = values;
-        this.context = context;
     }
 
     @Override
@@ -29,7 +27,7 @@ public class SimpleArrayAdapter extends ArrayAdapter<Employee> {
         ViewHolder holder = null;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.row_layout, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_layout, parent, false);
 
 
             holder = new ViewHolder();
