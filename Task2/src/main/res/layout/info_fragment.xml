@@ -5,7 +5,8 @@
 			  android:layout_width="match_parent"
 			  android:layout_height="wrap_content"
 			  android:padding="@dimen/info_padding"
-			  android:gravity="center">
+			  android:gravity="center"
+			  android:layout_gravity="center">
 
 	<LinearLayout
 		android:orientation="horizontal"
@@ -33,12 +34,13 @@
 			android:textSize="20sp"/>
 	</LinearLayout>
 
-	<TextView
-		android:layout_marginTop="@dimen/info_skill_margin"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:id="@+id/skills_text"
-		android:textStyle="italic"
-		android:textSize="15sp"
-		android:layout_gravity="center"/>
+	<include
+		layout="@layout/edit_skill_view"
+		android:id="@+id/edit_view"/>
+
+	<include
+		layout="@layout/show_skill_view"
+		android:id="@+id/show_view"/>
+
+
 </LinearLayout>
