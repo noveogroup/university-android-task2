@@ -7,25 +7,21 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements FragmentHost {
 
     private static final String KEY_EMPLOYEES = "employees";
-    private static final String KEY_SELECTED_INDEX = "selected_index";
 
-    private SkillsFragment mSkillsFragment;
     private ListView mList;
     private Employee[] mEmployees;
-    private int mSelectedIndex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final FragmentManager manager = getSupportFragmentManager();
-        mSkillsFragment = (SkillsFragment)manager.findFragmentById(R.id.skills);
-        manager.beginTransaction().hide(mSkillsFragment).commit();
         if (savedInstanceState == null) {
             mEmployees = getRandomEmployees();
         } else {
@@ -33,40 +29,33 @@ public class MainActivity extends FragmentActivity {
         }
         mList = (ListView)findViewById(R.id.list);
         mList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        if (findViewById(R.id.container) == null) {
+            ViewGroup container = new FrameLayout(this);
+            container.setId(R.id.container);
+            mList.addHeaderView(container, null, false);
+        }
         ListAdapter adapter = new ArrayAdapter<Employee>(
                 this, android.R.layout.simple_list_item_1, mEmployees);
         mList.setAdapter(adapter);
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                mSelectedIndex = pos;
-                showSelectedEmployee();
+                pos -= mList.getHeaderViewsCount();
+                SkillsFragment.fillInto(manager, R.id.container, pos + 1);
             }
         });
-    }
 
-    private void showSelectedEmployee() {
-        mSkillsFragment.setEmployee(mEmployees[mSelectedIndex]);
-        getSupportFragmentManager().beginTransaction()
-                .show(mSkillsFragment)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mSelectedIndex = savedInstanceState.getInt(KEY_SELECTED_INDEX);
-        if (mSelectedIndex >= 0) {
-            showSelectedEmployee();
-        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArray(KEY_EMPLOYEES, mEmployees);
-        outState.putInt(KEY_SELECTED_INDEX, mSelectedIndex);
+    }
+
+    @Override
+    public Employee getEmployee(int id) {
+        return mEmployees[id - 1];
     }
 
     private static Employee[] getRandomEmployees() {

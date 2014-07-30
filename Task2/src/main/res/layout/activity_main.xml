@@ -1,14 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-    <fragment
-            android:id="@+id/skills"
-            android:name="com.noveogroup.task2.SkillsFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/list"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent" />
-</LinearLayout>
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/list"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" />
