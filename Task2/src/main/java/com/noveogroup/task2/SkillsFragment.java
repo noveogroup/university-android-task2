@@ -46,11 +46,7 @@ public class SkillsFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof FragmentHost) {
-            mHost = (FragmentHost)activity;
-        } else {
-            throw new RuntimeException("Host activity must implement FragmentHost");
-        }
+        mHost = (FragmentHost)activity;
     }
 
     @Override
