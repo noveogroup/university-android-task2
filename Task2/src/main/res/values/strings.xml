@@ -2,6 +2,9 @@
 <resources>
 
     <string name="app_name">Task2</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="edit_button_text">Edit</string>
+    <string name="save_button_text">Save</string>
+    <string name="discard_button_text">Discard</string>
+    <string name="skills_input_hint">Input skills</string>
 
 </resources>
