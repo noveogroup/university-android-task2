@@ -22,6 +22,7 @@ public final class SkillsFragment extends Fragment {
     public final static String FRAGMENT_TAG = "com.noveogroup.task2.FRAGMENT_TAG";
     public final static String IS_EDITING = "com.noveogroup.com.task2.IS_EDITING";
     public final static String EMPLOYEE = "com.noveogroup.com.task2.EMPLOYEE";
+    public final static String SAVED_TEXT_FIELDS = "com.noveogroup.com.task2.SAVED_TEXT_FIELDS";
 
     private OnSaveListener onSaveListener;
     private TextView nameText;
@@ -30,6 +31,21 @@ public final class SkillsFragment extends Fragment {
     private EditText skillsEditText;
     private Button skillsEditButton;
     private Button skillsSaveButton;
+    private Bundle savedTextFields;
+
+    public static SkillsFragment newInstance(Employee employee) {
+        SkillsFragment newFragment = new SkillsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(EMPLOYEE, employee);
+        newFragment.setArguments(bundle);
+
+        return newFragment;
+    }
+
+    private Employee getEmployee() {
+        Bundle bundle = getArguments();
+        return bundle == null ? null : (Employee) bundle.getParcelable(EMPLOYEE);
+    }
 
     public interface OnSaveListener {
         void onSave(final String textToSave);
@@ -90,12 +106,14 @@ public final class SkillsFragment extends Fragment {
 
         skillsSaveButton.setCompoundDrawables(drawable, null, null, null);
 
-        Employee employee = savedInstanceState == null ? getEmployee()
-                            : (Employee) savedInstanceState.getParcelable(EMPLOYEE);
+        Bundle bundle = savedInstanceState == null ? null
+                                                : savedInstanceState.getBundle(SAVED_TEXT_FIELDS);
+        Employee employee = bundle == null ? getEmployee()
+                            : (Employee) bundle.getParcelable(EMPLOYEE);
         if(employee != null) {
             nameText.setText(employee.getName());
             surnameText.setText(employee.getSurname());
-            if (savedInstanceState != null && savedInstanceState.getBoolean(IS_EDITING)) {
+            if (bundle != null && bundle.getBoolean(IS_EDITING)) {
                 skillsEditText.setText(employee.getSkills());
                 changeInspectViewsVisibility(View.INVISIBLE);
             } else {
@@ -110,24 +128,11 @@ public final class SkillsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        if(nameText == null) {
-            nameText = (TextView) getActivity().findViewById(R.id.name_text);
-            surnameText = (TextView) getActivity().findViewById(R.id.surname_text);
-            skillsInspectText = (TextView) getActivity().findViewById(R.id.skills_inspect_text);
-            skillsEditText = (EditText) getActivity().findViewById(R.id.skills_edit_text);
+        if(savedTextFields == null) {
+            savedTextFields = new Bundle();
+            saveTextFields(savedTextFields);
         }
-        if (skillsEditText.getVisibility() == View.VISIBLE) {
-            outState.putBoolean(IS_EDITING, true);
-            outState.putParcelable(EMPLOYEE, new Employee(nameText.getText().toString(),
-                                                          surnameText.getText().toString(),
-                                                          skillsEditText.getText().toString()));
-        } else {
-            outState.putBoolean(IS_EDITING, false);
-            outState.putParcelable(EMPLOYEE, new Employee(nameText.getText().toString(),
-                                                          surnameText.getText().toString(),
-                                                          skillsInspectText.getText().toString()));
-        }
+        outState.putBundle(SAVED_TEXT_FIELDS, savedTextFields);
     }
 
     public void showEmployeeInfo(Employee employee) {
@@ -146,26 +151,14 @@ public final class SkillsFragment extends Fragment {
     private void setNameSurnameText(Employee employee) {
         nameText.setText(employee.getName());
         surnameText.setText(employee.getSurname());
-
-    }
-
-    public static SkillsFragment newInstance(Employee employee) {
-        SkillsFragment newFragment = new SkillsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(EMPLOYEE, employee);
-        newFragment.setArguments(bundle);
-
-        return newFragment;
-    }
-
-    private Employee getEmployee() {
-        Bundle bundle = getArguments();
-        return bundle == null ? null : (Employee) bundle.getParcelable(EMPLOYEE);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        savedTextFields = new Bundle();
+        saveTextFields(savedTextFields);
 
         nameText = null;
         surnameText = null;
@@ -186,6 +179,23 @@ public final class SkillsFragment extends Fragment {
         if(newState == View.VISIBLE || newState == View.INVISIBLE) {
             skillsInspectText.setVisibility(newState);
             skillsEditButton.setVisibility(newState);
+        }
+    }
+
+    private void saveTextFields(Bundle bundle) {
+
+        if(skillsEditText != null) {
+            if (skillsEditText.getVisibility() == View.VISIBLE) {
+                bundle.putBoolean(IS_EDITING, true);
+                bundle.putParcelable(EMPLOYEE, new Employee(nameText.getText().toString(),
+                        surnameText.getText().toString(),
+                        skillsEditText.getText().toString()));
+            } else {
+                bundle.putBoolean(IS_EDITING, false);
+                bundle.putParcelable(EMPLOYEE, new Employee(nameText.getText().toString(),
+                        surnameText.getText().toString(),
+                        skillsInspectText.getText().toString()));
+            }
         }
     }
 }
