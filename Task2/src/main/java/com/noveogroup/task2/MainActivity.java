@@ -1,17 +1,15 @@
 package com.noveogroup.task2;
 
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
-public class MainActivity extends Activity {
-	private InfoFragment infoFragment;
-	private int currentPosition;
+public class MainActivity extends FragmentActivity {
 	public static final Employee[] initial = {
 			new Employee("Johan", "Ivanov"),
 			new Employee("Peter", "Petrov"),
@@ -37,7 +35,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		infoFragment = null;
 
 		ArrayAdapter<Employee> adapter = new ArrayAdapter<Employee>(this, R.layout.list_item, initial);
 		ListView list = (ListView) findViewById(R.id.listView);
@@ -52,11 +49,13 @@ public class MainActivity extends Activity {
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				getFragmentManager().executePendingTransactions();
-				if (infoFragment == null) {
 
-					getFragmentManager().beginTransaction().
-							replace(R.id.info_container, infoFragment = InfoFragment.newInstance(
+				InfoFragment infoFragment = (InfoFragment) getSupportFragmentManager().findFragmentById(R.id.info_container);
+				if (infoFragment == null) {
+					System.out.println(123);
+					getSupportFragmentManager().executePendingTransactions();
+					getSupportFragmentManager().beginTransaction().
+							replace(R.id.info_container, InfoFragment.newInstance(
 											((Employee) parent.getItemAtPosition(position)))
 							).commit();
 				} else {

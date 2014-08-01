@@ -3,7 +3,6 @@ package com.noveogroup.task2;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
 
 public class Employee implements Parcelable {
 	private final String name;
@@ -13,6 +12,11 @@ public class Employee implements Parcelable {
 	public Employee(String name, String surname) {
 		this.name = name;
 		this.surname = surname;
+	}
+
+	private Employee(Parcel parcel) {
+		this(parcel.readString(), parcel.readString());
+		this.setSkills(parcel.readString());
 	}
 
 	public String getName() {
@@ -53,9 +57,7 @@ public class Employee implements Parcelable {
 
 		@Override
 		public Employee createFromParcel(Parcel source) {
-			Employee employee = new Employee(source.readString(), source.readString());
-			employee.setSkills(source.readString());
-			return employee;
+			return new Employee(source);
 		}
 
 		@Override

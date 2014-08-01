@@ -1,46 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  android:orientation="vertical"
-			  android:layout_width="match_parent"
-			  android:layout_height="wrap_content"
-			  android:padding="@dimen/info_padding"
-			  android:gravity="center"
-			  android:layout_gravity="center">
-
-	<LinearLayout
-		android:orientation="horizontal"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center">
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_gravity="center"
+	android:gravity="center"
+	android:orientation="vertical"
+	android:padding="@dimen/info_padding">
 
 	<TextView
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:id="@+id/name_text"
-			android:layout_weight="1"
-			android:gravity="center"
+		android:id="@+id/name_text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:textSize="20sp"
+		android:textStyle="bold"/>
 
-			android:textStyle="bold"
-			android:textSize="20sp"/>
-
-		<TextView
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:id="@+id/surname_text"
-			android:layout_weight="1"
-			android:gravity="center"
-			android:textStyle="bold"
-			android:textSize="20sp"/>
-	</LinearLayout>
+	<TextView
+		android:id="@+id/surname_text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:textSize="20sp"
+		android:textStyle="bold"/>
 
 	<include
+		android:id="@+id/edit_view"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/name_text"
 		layout="@layout/edit_skill_view"
-		android:id="@+id/edit_view"/>
+		/>
 
 	<include
+		android:id="@+id/show_view"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/name_text"
 		layout="@layout/show_skill_view"
-		android:id="@+id/show_view"/>
+		/>
 
-
-</LinearLayout>
+</RelativeLayout>
