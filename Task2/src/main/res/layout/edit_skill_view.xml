@@ -6,22 +6,26 @@
 			  android:layout_height="wrap_content">
 
 	<EditText
-		android:layout_marginTop="@dimen/info_margin"
+
+		android:id="@+id/skills_text_edit"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:id="@+id/skills_text_edit"
+		android:layout_marginTop="@dimen/info_margin"
 		android:inputType="text"
 		android:textStyle="italic"
-		android:textSize="15sp"
+		android:textSize="@dimen/skill_text_size"
 		android:layout_gravity="center"/>
 
 	<Button
-		android:layout_marginTop="@dimen/info_margin"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/save_btn"
 		android:id="@+id/save_btn"
-		android:textSize="15sp"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_marginTop="@dimen/info_margin"
+
+
+		android:text="@string/save_btn"
+
+		android:textSize="@dimen/save_btn_text_size"
 		android:layout_gravity="center"
 		android:drawableRight="@drawable/check"
 		/>
