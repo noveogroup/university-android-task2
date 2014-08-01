@@ -3,5 +3,7 @@
 
     <string name="app_name">Task2</string>
     <string name="hello_world">Hello world!</string>
+	<string name="edit_btn">Edit</string>
+	<string name="save_btn">Save</string>
 
 </resources>
