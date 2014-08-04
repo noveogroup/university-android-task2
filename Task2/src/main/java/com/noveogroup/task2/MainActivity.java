@@ -12,11 +12,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
+    private static final String CURRENT_EMPLOYER_BUNDLE_KEY = "CURRENT_EMPLOYER_BUNDLE_KEY";
+    private static final String EMPLOYEES_BUNDLE_KEY = "EMPLOYEES_BUNDLE_KEY";
+
     private ArrayList<Employee> employees = new ArrayList<Employee>();
     private int currentEmployer = -1;
     private ListView listView;
-    private static final String CURRENT_EMPLOYER_BUNDLE_KEY = "CURRENT_EMPLOYER_BUNDLE_KEY";
-    private static final String EMPLOYEES_BUNDLE_KEY = "EMPLOYEES_BUNDLE_KEY";
     private View header;
     private View headerLand;
     private View headerBox;
