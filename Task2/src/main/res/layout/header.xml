@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/header_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/top_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/fname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:padding="@dimen/header_elements_padding"/>
+
+            <TextView
+                android:id="@+id/lname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/header_elements_padding"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/skills"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/top_section"
+            android:padding="@dimen/header_elements_padding"/>
+
+        <Button
+            android:id="@+id/edit_skills_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="editSkillsButtonOnClick"
+            android:padding="@dimen/header_elements_padding"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/skills"
+            android:text="@string/edit"/>
+
+        <EditText
+            android:id="@+id/edit_skills_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_skills"
+            android:layout_below="@+id/top_section"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/header_elements_padding"/>
+
+        <Button
+            android:id="@+id/save_skills_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="saveSkillsButtonOnClick"
+            android:padding="@dimen/header_elements_padding"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/edit_skills_view"
+            android:text="@string/save"
+            android:drawableRight="@drawable/success"
+            android:drawablePadding="@dimen/drawable_padding"/>
+    </RelativeLayout>
+</LinearLayout>

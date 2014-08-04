@@ -3,5 +3,8 @@
 
     <string name="app_name">Task2</string>
     <string name="hello_world">Hello world!</string>
+    <string name="enter_skills">Enter your skills</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
 
 </resources>
