@@ -1,11 +1,11 @@
 
 <LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
     android:orientation="horizontal"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     tools:context=".MainActivity"
     android:background="@android:color/black">
 
@@ -18,27 +18,6 @@
         <include layout="@layout/header"
             android:layout_width="@dimen/header_width_land"
             android:layout_height="wrap_content"/>
-<!--
-        <Button
-            style="?android:attr/buttonStyleInset"
-            android:id="@+id/editButton"
-            android:layout_width="@dimen/header_width_land"
-            android:layout_height="wrap_content"
-            android:text="@string/edit_skills"
-            android:background="@color/dark_blue"
-            android:textColor="@android:color/white"
-            android:clickable="true" />
-
-        <Button
-            style="?android:attr/buttonStyleInset"
-            android:id="@+id/saveButton"
-            android:layout_width="@dimen/header_width_land"
-            android:layout_height="wrap_content"
-            android:text="@string/save"
-            android:background="@color/dark_blue"
-            android:textColor="@android:color/white"
-            android:clickable="true" />
--->
     </LinearLayout>
 
     <include layout="@layout/list_layout"

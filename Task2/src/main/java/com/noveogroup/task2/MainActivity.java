@@ -2,12 +2,14 @@ package com.noveogroup.task2;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -30,8 +32,13 @@ public class MainActivity extends Activity {
     private TextView nameTextView;
     private TextView surnameTextView;
     private TextView skillsTextView;
-    private List<Employee> employees = new ArrayList<Employee>();
+    private ArrayList<Employee> employees = new ArrayList<Employee>();
     private boolean isEditing;
+
+    private static final String KEY_EMPLOYEES = "EMPLOYEES";
+    private static final String KEY_IS_EDITING = "IS_EDITING";
+    private static final String KEY_CURRENT_EMPLOYEE_NUM = "CURRENT_EMPLOYEE_NUM";
+    private static final String KEY_EDITOR_TEXT = "EDITOR_TEXT";
 
     private void setViewMode() {
         editButton.setVisibility(View.VISIBLE);
@@ -51,35 +58,24 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        for (int i = 0; i < employees.size(); i++) {
-            String name = "name" + i;
-            String surname = "surname" + i;
-            String skills = "skills" + i;
-            outState.putString(name, employees.get(i).getName());
-            outState.putString(surname, employees.get(i).getSurname());
-            outState.putString(skills, employees.get(i).getSkills());
+        if (isEditing) {
+            outState.putString(KEY_EDITOR_TEXT, skillsEditor.getText().toString());
         }
-        outState.putInt("num", employees.size());
-        outState.putInt("currentEmployee", currentEmployeeNum);
-        outState.putBoolean("isEditing", isEditing);
+        outState.putInt(KEY_CURRENT_EMPLOYEE_NUM, currentEmployeeNum);
+        outState.putParcelableArrayList(KEY_EMPLOYEES, employees);
+        outState.putBoolean(KEY_IS_EDITING, isEditing);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        int num = savedInstanceState.getInt("num");
-        for (int i = 0; i < num; i++) {
-            String name = "name" + i;
-            String surname = "surname" + i;
-            String skills = "skills" + i;
-            Employee temp = new Employee(savedInstanceState.getString(name), savedInstanceState.getString(surname), savedInstanceState.getString(skills));
-            employees.set(i, temp);
-        }
-        nameTextView.setText(employees.get(savedInstanceState.getInt("currentEmployee")).getName());
-        surnameTextView.setText(employees.get(savedInstanceState.getInt("currentEmployee")).getSurname());
-        skillsTextView.setText(employees.get(savedInstanceState.getInt("currentEmployee")).getSkills());
-        if (savedInstanceState.getBoolean("isEditing")) {
+        employees = savedInstanceState.getParcelableArrayList(KEY_EMPLOYEES);
+        nameTextView.setText(employees.get(savedInstanceState.getInt(KEY_CURRENT_EMPLOYEE_NUM)).getName());
+        surnameTextView.setText(employees.get(savedInstanceState.getInt(KEY_CURRENT_EMPLOYEE_NUM)).getSurname());
+        skillsTextView.setText(employees.get(savedInstanceState.getInt(KEY_CURRENT_EMPLOYEE_NUM)).getSkills());
+        if (savedInstanceState.getBoolean(KEY_IS_EDITING)) {
             setEditMode();
+            skillsEditor.setText(savedInstanceState.getString(KEY_EDITOR_TEXT));
         }
         else {
             setViewMode();
@@ -104,7 +100,7 @@ public class MainActivity extends Activity {
         drawable.setBounds(0, 0, res.getDimensionPixelOffset(R.dimen.compound_drawable_size), res.getDimensionPixelOffset(R.dimen.compound_drawable_size));
 
         ListView listView = (ListView)findViewById(R.id.list_view);
-        if (res.getConfiguration().orientation == 1) {
+        if (res.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             View header = View.inflate(this, R.layout.header , null);
             listView.addHeaderView(header);
 
@@ -148,9 +144,11 @@ public class MainActivity extends Activity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                employees.set(currentEmployeeNum, new Employee(nameTextView.getText().toString(), surnameTextView.getText().toString(), skillsEditor.getText().toString()));
                 setViewMode();
+                employees.get(currentEmployeeNum).setSkills(skillsEditor.getText().toString());
                 skillsTextView.setText(skillsEditor.getText());
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             }
         });
 
@@ -158,7 +156,7 @@ public class MainActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (res.getConfiguration().orientation == 1) {
+                if (res.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     position--;
                 }
                 currentEmployeeNum = position;
@@ -200,7 +198,7 @@ public class MainActivity extends Activity {
             if (view == null) {
                 view = LayoutInflater.from(context).inflate(R.layout.list_item, viewGroup, false);
                 holder = new ViewHolder();
-                holder.fullname = (TextView)view.findViewById(R.id.listFullname);
+                holder.fullName = (TextView)view.findViewById(R.id.listFullname);
                 view.setTag(holder);
             }
             if (holder == null) {
@@ -208,12 +206,12 @@ public class MainActivity extends Activity {
             }
 
             final Employee employee = getItem(i);
-            holder.fullname.setText(employee.getName() + " " + employee.getSurname());
+            holder.fullName.setText(employee.getName() + " " + employee.getSurname());
             return view;
         }
 
         private class ViewHolder {
-            private TextView fullname;
+            private TextView fullName;
         }
     }
 }
