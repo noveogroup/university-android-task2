@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/relative_layout_padding"
-    android:background="@android:color/black">
-
-
     <TextView
-        android:id="@+id/listFullname"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_full_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="@dimen/relative_layout_padding"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/fullname"
-        android:textColor="@android:color/white"/>
-
-</RelativeLayout >
+        android:text="@string/fullname"/>

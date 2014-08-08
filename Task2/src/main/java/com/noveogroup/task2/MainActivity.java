@@ -24,6 +24,10 @@ import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends Activity {
+    private static final String KEY_EMPLOYEES = "EMPLOYEES";
+    private static final String KEY_IS_EDITING = "IS_EDITING";
+    private static final String KEY_CURRENT_EMPLOYEE_NUM = "CURRENT_EMPLOYEE_NUM";
+    private static final String KEY_EDITOR_TEXT = "EDITOR_TEXT";
 
     private int currentEmployeeNum;
     private Button editButton;
@@ -34,11 +38,6 @@ public class MainActivity extends Activity {
     private TextView skillsTextView;
     private ArrayList<Employee> employees = new ArrayList<Employee>();
     private boolean isEditing;
-
-    private static final String KEY_EMPLOYEES = "EMPLOYEES";
-    private static final String KEY_IS_EDITING = "IS_EDITING";
-    private static final String KEY_CURRENT_EMPLOYEE_NUM = "CURRENT_EMPLOYEE_NUM";
-    private static final String KEY_EDITOR_TEXT = "EDITOR_TEXT";
 
     private void setViewMode() {
         editButton.setVisibility(View.VISIBLE);
@@ -88,9 +87,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editButton = (Button)findViewById(R.id.editButton);
-        saveButton = (Button)findViewById(R.id.saveButton);
-        skillsEditor = (EditText)findViewById(R.id.skillsEditor);
+        editButton = (Button)findViewById(R.id.edit_button);
+        saveButton = (Button)findViewById(R.id.save_button);
+        skillsEditor = (EditText)findViewById(R.id.skills_editor);
         nameTextView = (TextView)findViewById(R.id.name);
         surnameTextView = (TextView)findViewById(R.id.surname);
         skillsTextView = (TextView)findViewById(R.id.skills);
@@ -104,9 +103,9 @@ public class MainActivity extends Activity {
             View header = View.inflate(this, R.layout.header , null);
             listView.addHeaderView(header);
 
-            editButton = (Button)header.findViewById(R.id.editButton);
-            saveButton = (Button)header.findViewById(R.id.saveButton);
-            skillsEditor = (EditText)header.findViewById(R.id.skillsEditor);
+            editButton = (Button)header.findViewById(R.id.edit_button);
+            saveButton = (Button)header.findViewById(R.id.save_button);
+            skillsEditor = (EditText)header.findViewById(R.id.skills_editor);
             nameTextView = (TextView)header.findViewById(R.id.name);
             surnameTextView = (TextView)header.findViewById(R.id.surname);
             skillsTextView = (TextView)header.findViewById(R.id.skills);
@@ -119,18 +118,24 @@ public class MainActivity extends Activity {
 
         Random rnd = new Random();
 
+        String nameString = getString(R.string.name);
+        String surnameString = getString(R.string.surname);
+        String newSkillsString = getString(R.string.skills);
+
         for (int i = 0; i < 100; i++) {
-            String name = getString(R.string.name) + i;
-            String surname = getString(R.string.surname) + i;
+            StringBuilder name = new StringBuilder();
+            name.append(nameString).append(i);
+            StringBuilder surname = new StringBuilder();
+            surname.append(surnameString).append(i);
             int max = rnd.nextInt(5) + 1;
-            String newSkills = "";
+            StringBuilder newSkills = new StringBuilder();
             for (int j = 0; j < max; j++) {
-                newSkills = newSkills + getString(R.string.skills) + j;
+                newSkills.append(newSkillsString).append(j);
                 if (j < (max - 1)) {
-                    newSkills = newSkills + ", ";
+                    newSkills.append(", ");
                 }
             }
-            employees.add(new Employee(name, surname, newSkills));
+            employees.add(new Employee(name.toString(), surname.toString(), newSkills.toString()));
         }
 
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -159,11 +164,13 @@ public class MainActivity extends Activity {
                 if (res.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     position--;
                 }
-                currentEmployeeNum = position;
-                nameTextView.setText(employees.get(position).getName());
-                surnameTextView.setText(employees.get(position).getSurname());
-                skillsTextView.setText(employees.get(position).getSkills());
-                setViewMode();
+                if (position >= 0) {
+                    currentEmployeeNum = position;
+                    nameTextView.setText(employees.get(position).getName());
+                    surnameTextView.setText(employees.get(position).getSurname());
+                    skillsTextView.setText(employees.get(position).getSkills());
+                    setViewMode();
+                }
             }
         });
     }
@@ -198,7 +205,7 @@ public class MainActivity extends Activity {
             if (view == null) {
                 view = LayoutInflater.from(context).inflate(R.layout.list_item, viewGroup, false);
                 holder = new ViewHolder();
-                holder.fullName = (TextView)view.findViewById(R.id.listFullname);
+                holder.fullName = (TextView)view.findViewById(R.id.list_full_name);
                 view.setTag(holder);
             }
             if (holder == null) {
