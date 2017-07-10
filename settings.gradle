@@ -1,1 +1,1 @@
-include ':UIExample', ':Task2'
+include ':app'
